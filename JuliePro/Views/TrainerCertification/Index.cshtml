@@ -10,18 +10,22 @@
     <script>
         $(document).ready(function () {
             $('#name').on('input', function () {
+
                 var input = $(this).val().toLowerCase();
 
                 $('.modelNom').each(function () {
                     var nom = $(this).text();
 
-                    if (nom.toLowerCase().indexOf(input) >= 0) {
-                        $(this).closest('tr').addClass("surlignage");
+                    if (input.length == 0) {
+                        $(this).parent().removeClass("surlignage");
                     }
-                    else if (nom.toLowerCase().indexOf(input) == -1) {
-                        $(this).closest('tr').removeClass("surlignage");
+                    else if (nom.toLowerCase().includes(input)) {
+                        $(this).parent().addClass("surlignage");
                     }
-                });             
+                    else {
+                        $(this).parent().removeClass("surlignage");
+                    }
+                });
             });
         });
     </script>
@@ -60,30 +64,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td class="modelNom">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="modelNom sulignagne">
 
-                 <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
-                @Html.DisplayFor(modelItem => item.Trainer.FullName)
-                </a>
-                
-            </td>
-            <td>
-                
-                
-                <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
-               
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCertification)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">@Locals["Details"]</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
-            </td>
-        </tr>
-}
+                    <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
+                        @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                    </a>
+
+                </td>
+                <td class="sulignagne">
+
+
+                    <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
+
+                </td>
+                <td class="sulignagne">
+                    @Html.DisplayFor(modelItem => item.DateCertification)
+                </td>
+                <td class="sulignagne">
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Locals["Details"]</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
