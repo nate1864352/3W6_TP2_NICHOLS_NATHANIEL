@@ -6,6 +6,27 @@
 
 <h1>@Locals["Index"]</h1>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#name').on('input', function () {
+                var input = $(this).val().toLowerCase();
+
+                $('.modelNom').each(function () {
+                    var nom = $(this).text();
+
+                    if (nom.toLowerCase().indexOf(input) >= 0) {
+                        $(this).closest('tr').addClass("surlignage");
+                    }
+                    else if (nom.toLowerCase().indexOf(input) == -1) {
+                        $(this).closest('tr').removeClass("surlignage");
+                    }
+                });             
+            });
+        });
+    </script>
+}
+
 <p>
     <a asp-action="Create">@Locals["Create New"]</a>
 </p>
@@ -41,7 +62,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="modelNom">
 
                  <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
                 @Html.DisplayFor(modelItem => item.Trainer.FullName)

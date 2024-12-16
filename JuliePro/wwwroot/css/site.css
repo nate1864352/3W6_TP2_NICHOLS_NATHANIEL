@@ -276,3 +276,7 @@ a.article:hover {
 .position{
     display:inline-block;
 }
+
+.surlignage {
+    background-color:yellow;
+}

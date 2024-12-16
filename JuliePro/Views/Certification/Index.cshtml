@@ -22,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FullTitle)
@@ -44,6 +44,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
