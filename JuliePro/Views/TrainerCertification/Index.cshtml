@@ -27,6 +27,23 @@
                     }
                 });
             });
+
+            $('#btn').click(function () {
+
+                var date = new Date($('#date').val());
+
+                $('#table tr').filter(function () {
+
+                    if (isNaN(date.getTime())) {
+                        $('#table').children('tr').each(function () {
+                            $(this).show();
+                        });
+                    }
+                    else {
+                        $(this).toggle(new Date($(this).children('#dateRow').html()) >= date);
+                    }
+                });
+            });
         });
     </script>
 }
@@ -44,7 +61,7 @@
     <div class="col-2">
         <h5>Filter by Date</h5>
         <input class="form-control" type="date" id="date" name="date">
-        <button type="button" class="btn btn-primary">Filtrer</button>
+        <button type="button" id="btn" class="btn btn-primary">Filtrer</button>
     </div>
 </form>
 
@@ -63,27 +80,27 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="table">
         @foreach (var item in Model)
         {
             <tr>
-                <td class="modelNom sulignagne">
+                <td class="modelNom">
 
                     <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
                         @Html.DisplayFor(modelItem => item.Trainer.FullName)
                     </a>
 
                 </td>
-                <td class="sulignagne">
+                <td>
 
 
                     <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
 
                 </td>
-                <td class="sulignagne">
+                <td id="dateRow">
                     @Html.DisplayFor(modelItem => item.DateCertification)
                 </td>
-                <td class="sulignagne">
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">@Locals["Details"]</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
