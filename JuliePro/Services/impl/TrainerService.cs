@@ -36,14 +36,19 @@ namespace JuliePro.Services.impl
             var result = new TrainerSearchViewModel(filter);
 
             //TODO Faire les filtres et utilisez les paramètres de pagination.
+            result.Items = await this._dbContext.Trainers.
+                            Where(x => filter.SearchNameText == null || (x.FirstName.Contains(filter.SearchNameText) || x.LastName.Contains(filter.SearchNameText)))
+                           .Where(x => filter.SelectedDisciplineId == null || x.Discipline_Id == filter.SelectedDisciplineId)
+                           .Where(x => filter.SelectedCertificationId == null || x.TrainerCertifications.Where(x => x.Certification_Id == filter.SelectedCertificationId).Any())
+                           .Where(x => filter.SelectedCertificationCenter == null || x.TrainerCertifications.Where(x => x.Certification.CertificationCenter == filter.SelectedCertificationCenter).Any())
+                           .Where(x => filter.SelectedGender == null || x.Genre == filter.SelectedGender)
+                           .ToPaginatedAsync(result.SelectedPageIndex, result.SelectedPageSize);
 
-            result.Items = await this._dbContext.Trainers.ToPaginatedAsync(0,10000);
-
-            //TODO ajouter les éléments dans selectList 
+            //TODO ajouter les éléments dans selectList
             result.AvailablePageSizes = new SelectList(new List<int>() { 9, 12, 18, 21 });
-            result.Disciplines = new SelectList(new List<Discipline>(), "Id", "Name");
-            result.Certifications = new SelectList(new List<Certification>(), "Id", "FullTitle");
-            result.CertificationCenters = new SelectList(new List<string>());
+            result.Disciplines = new SelectList(new List<Discipline>(await _dbContext.Disciplines.Select(x => x).ToListAsync()), "Id", "Name");
+            result.Certifications = new SelectList(await _dbContext.Certifications.Select(x => x).ToListAsync(), "Id", "FullTitle");
+            result.CertificationCenters = new SelectList(new List<string>(_dbContext.Certifications.Select(x => x.CertificationCenter).Distinct().ToList()));
 
             return result;
         }

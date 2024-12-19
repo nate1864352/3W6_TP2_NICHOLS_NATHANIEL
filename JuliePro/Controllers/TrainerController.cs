@@ -28,7 +28,7 @@ namespace JuliePro.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var trainers = await this._service.GetAllAsync(new TrainerSearchViewModelFilter() { SelectedPageIndex = 0, SelectedPageSize=9 }); 
+            var trainers = await this._service.GetAllAsync(new TrainerSearchViewModelFilter() { SelectedPageIndex = 0, SelectedPageSize = 9 });
 
             return View(trainers);
         }
@@ -36,9 +36,7 @@ namespace JuliePro.Controllers
 
         public async Task<IActionResult> Filter(TrainerSearchViewModelFilter filter)
         {
-            //TODO implantez cette méthode (vous pouvez retourner la vue Index, avec le modèle filtré)!
-
-            return RedirectToAction(nameof(Index));
+            return View("Index", await _service.GetAllAsync(filter));
         }
 
 
