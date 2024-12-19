@@ -15,6 +15,21 @@
                     $(this).find('.card-body > aside').removeClass("show");
                 }
             });
+
+            $('.pagination > li > span').click(function () {
+                var id = $(this).attr('data-page-id');
+
+                $('#page').val(id);
+                $('.filter').click();
+            });
+
+            $('.filter').click(function () {
+                var currentSize = parseInt($('#size option:selected').text());
+
+                if (currentSize != @Model.SelectedPageSize) {
+                    $('#page').val(0);
+                }
+            });
         });
     </script>
 }
@@ -65,20 +80,19 @@
                 <br />
                 <label asp-for="SelectedPageSize" class="control-label"></label>
 
-                <select asp-for="SelectedPageSize" asp-items="Model.AvailablePageSizes" class="form-control">
+                <select asp-for="SelectedPageSize" asp-items="Model.AvailablePageSizes" id="size" class="form-control">
                     <option selected="selected" value="">@Locals["Please select"]</option>
                 </select>
 
                 <br />
-                <label asp-for="SelectedPageIndex" class="control-label"></label>
 
-                <input asp-for="SelectedPageIndex" class="form-control" readonly />
+                <input asp-for="SelectedPageIndex" type="hidden" id="page" class="form-control" readonly />
 
 
                 <br />
 
                 <a asp-action="Index" class="btn btn-danger">@Locals["Reset"]</a>
-                <button type="submit" class="btn btn-success">@Locals["Filter"]</button>
+                <button type="submit" class="btn btn-success filter">@Locals["Filter"]</button>
             </form>
         </div>
 
@@ -89,7 +103,6 @@
 
         @foreach (var item in Model.Items)
         {
-
             <div class="card">
                 <img src="@(JuliePro.Utility.AppConstants.ImagePathView + item.Photo)">
 
@@ -136,21 +149,16 @@
                                 <td class="col-sm-10">
                                     @Html.DisplayFor(model => item.Email)
                                 </td>
-
                             </tr>
                             <tr>
-
                                 <th class="col-sm-2">
                                     @Html.DisplayNameFor(model => item.Discipline)
                                 </th>
                                 <td class="col-sm-10">
                                     @Html.DisplayFor(model => item.Discipline.Name)
                                 </td>
-
                             </tr>
-
                             <tr>
-
                                 <th class="col-sm-2">
                                     @Html.DisplayNameFor(model => item.Discipline.Description)
                                 </th>
@@ -163,39 +171,34 @@
                                 <td colspan="2">
                                     <a asp-action="TrainerIndex" asp-controller="Record" asp-route-trainerId="@item.Id" class="btn btn-primary"><i class="fa-solid fa-trophy"></i></a>
                                     <a asp-action="TrainerIndex" asp-controller="Certification" asp-route-trainerId="@item.Id" class="btn btn-primary"><i class="fa-solid fa-graduation-cap"></i></a>
-                                    | <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
-
-
-
                                 </td>
                             </tr>
                         </table>
                     </aside>
                 </div>
             </div>
-
-
-
         }
-
-
-
     </div>
-
-
 </div>
+
 <div id="content-pagination">
     <nav>
         <ul class="pagination">
 
-            <li class="page-item"><span data-page-id="0" class="page-link">@Locals["Previous"]</span></li>
-            <li class="page-item active"><span class="page-link" data-page-id="0">1</span></li>
-            <li class="page-item"><span class="page-link" data-page-id="1">2</span></li>
-            <li class="page-item"><span class="page-link" data-page-id="1">@Locals["Next"]</span></li>
-
+            @if (Model.Items.HasPreviousPage)
+            {
+                <li class="page-item"><span data-page-id="@(Model.Items.PageIndex - 1)" class="page-link">@Locals["Previous"]</span></li>
+            }
+            @for (int i = 0; i < Model.Items.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.Items.PageIndex ? "active" : "")"><span class="page-link" data-page-id="@i">@(i + 1)</span></li>
+            }
+            @if (Model.Items.HasNextPage)
+            {
+                <li class="page-item"><span class="page-link" data-page-id="@(Model.Items.PageIndex + 1)">@Locals["Next"]</span></li>
+            }
         </ul>
     </nav>
 </div>
-
-

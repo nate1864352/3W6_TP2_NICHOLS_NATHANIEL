@@ -42,7 +42,7 @@ namespace JuliePro.Services.impl
                            .Where(x => filter.SelectedCertificationId == null || x.TrainerCertifications.Where(x => x.Certification_Id == filter.SelectedCertificationId).Any())
                            .Where(x => filter.SelectedCertificationCenter == null || x.TrainerCertifications.Where(x => x.Certification.CertificationCenter == filter.SelectedCertificationCenter).Any())
                            .Where(x => filter.SelectedGender == null || x.Genre == filter.SelectedGender)
-                           .ToPaginatedAsync(result.SelectedPageIndex, result.SelectedPageSize);
+                           .ToPaginatedAsync(result.SelectedPageSize != filter.SelectedPageSize ? 0 : result.SelectedPageIndex, result.SelectedPageSize);
 
             //TODO ajouter les éléments dans selectList
             result.AvailablePageSizes = new SelectList(new List<int>() { 9, 12, 18, 21 });
