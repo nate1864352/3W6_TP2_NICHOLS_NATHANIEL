@@ -141,4 +141,10 @@
   <data name="Trainer" xml:space="preserve">
     <value>Entraîneur</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>Le {0} est nécessaire.</value>
+  </data>
+  <data name="ValidationRange" xml:space="preserve">
+    <value>Le {0} doit être compris entre {1} et {2}.</value>
+  </data>
 </root>

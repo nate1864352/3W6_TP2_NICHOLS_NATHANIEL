@@ -71,6 +71,7 @@ namespace JuliePro.Controllers
         {
             ModelState.Remove(nameof(model.Trainers));
             ModelState.Remove(nameof(model.Displicines));
+            ModelState.Remove(nameof(model.Records));
 
             if (ModelState.IsValid)
             {
@@ -115,6 +116,8 @@ namespace JuliePro.Controllers
             {
                 return NotFound();
             }
+
+            ModelState.Remove(nameof(recordVm.Record));
 
             if (ModelState.IsValid)
             {

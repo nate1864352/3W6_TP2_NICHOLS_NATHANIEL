@@ -3,6 +3,7 @@ using JuliePro.DataSeed;
 using JuliePro.Services;
 using JuliePro.Services.impl;
 using JuliePro.Utility;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,27 @@ builder.Services.AddDbContext<JulieProDbContext>(opt => {
 
 });
 
+CultureInfo[] supportedCultures = new[]
+{
+    new CultureInfo("en-US"),
+    new CultureInfo("fr-CA")
+};
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "i18n");
+
+builder.Services.AddDbContext<JulieProDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture(culture: "fr-CA", uiCulture: "fr-CA");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
 builder.Services.AddScoped<IJulieProDbContextSeed, JulieProDbContextSeedDev>();
 
 builder.Services.AddScoped(typeof(IServiceBaseAsync<>), typeof(ServiceBaseEF<>));
@@ -35,7 +57,8 @@ builder.Services.AddSingleton<IImageFileManager, ImageFileManager>();
 
 var app = builder.Build();
 
-
+var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(locOptions.Value);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

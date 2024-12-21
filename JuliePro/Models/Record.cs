@@ -19,10 +19,11 @@ namespace JuliePro.Models
         public virtual Discipline Discipline { get; set; }
 
         [Display(Name = "Amount")]
-        [Range(0, 10000)]
+        [Range(0, 10000, ErrorMessage = "ValidationRange")]
         public Decimal Amount { get; set; }
 
         [Display(Name = "Unit")]
+        [Required(ErrorMessage = "Required")]
         [StringLength(50, MinimumLength = 1)]
         public string Unit { get; set; }
 
