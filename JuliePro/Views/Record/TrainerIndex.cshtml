@@ -1,0 +1,54 @@
+﻿@model RecordViewModel
+
+@{
+    ViewData["Title"] = @Locals["Index"];
+}
+
+<h3>@Locals["RecordsOf", @Model.Trainer.FullName]</h3>
+
+@if (Model.Records.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Record.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Record.Discipline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Record.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Record.Trainer)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Records)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discipline.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">@Locals["Edit"]</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Index" asp-controller="Trainer">@Locals["Back to List"]</a>

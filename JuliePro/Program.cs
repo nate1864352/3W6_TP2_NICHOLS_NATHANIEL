@@ -27,6 +27,7 @@ builder.Services.AddScoped<IJulieProDbContextSeed, JulieProDbContextSeedDev>();
 builder.Services.AddScoped(typeof(IServiceBaseAsync<>), typeof(ServiceBaseEF<>));
 builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<ICertificationService, CertificationService>();
+builder.Services.AddScoped<IRecordService, RecordService>();
 
 builder.Services.AddSingleton<IImageFileManager, ImageFileManager>();
 

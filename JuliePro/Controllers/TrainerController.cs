@@ -78,8 +78,6 @@ namespace JuliePro.Controllers
 
             if (ModelState.IsValid)
             {
-               
-
                 await _service.CreateAsync(trainer, HttpContext.Request.Form);
 
                 return RedirectToAction(nameof(Index));

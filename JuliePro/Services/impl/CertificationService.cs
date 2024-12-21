@@ -8,6 +8,7 @@ namespace JuliePro.Services.impl
     {
         public CertificationService(JulieProDbContext dbContext) : base(dbContext)
         {
+
         }
 
         public async Task<TrainerCertificationViewModel> GetAllByTrainerAsync(int trainerId)
